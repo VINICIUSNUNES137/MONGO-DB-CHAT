@@ -1,6 +1,6 @@
 import { RegisterUser } from "./interface/interfaceRegister"
 import { verifyRegisterUser } from "./validate/validateRegister"
-import { dbRegisterUser } from "../../model/clienteDao/registerClient"
+import { dbRegisterUser } from "../../model/userDao/registerClient"
 
 const registerUser = async (data: RegisterUser) => {
 

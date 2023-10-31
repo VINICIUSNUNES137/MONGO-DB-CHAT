@@ -5,7 +5,7 @@ const verifyRegisterUser = (data: RegisterUser) => {
   const urlRegex = /^(?:https?:\/\/)?[^\s\/]+(\.[^\s\/]+)*$/
 
   switch (true) {
-    case data.typeUser.toUpperCase() !== "CLIENT" && data.typeUser !== "DIARIST":
+    case data.typeUser.toUpperCase() !== "CLIENT" && data.typeUser.toUpperCase() !== "DIARIST":
       return "Type user is invalid";
     case typeof data.name !== "string" || data.name === "" || data.name.length < 2:
       return "Invalid name";

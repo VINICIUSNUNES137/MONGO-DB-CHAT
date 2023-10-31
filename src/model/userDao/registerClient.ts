@@ -3,19 +3,17 @@ import { RegisterUser } from "../../controller/register/interface/interfaceRegis
 
 const prisma = new PrismaClient()
 
-const dbRegisterUser = async function(data: RegisterUser){
+const dbRegisterUser = async function (data: RegisterUser) {
 
     try {
 
+        // as é usado para falar o tipo  
         const count = await prisma.registerUser.count({
             where: {
-                typeUser: data.typeUser,
+                typeUser: data.typeUser.toUpperCase() as TypeUser,
                 userMysqlId: data.userMysqlId,
             },
-        })
-
-        console.log(count);
-        
+        })        
 
         if (count > 0) {
             return false
@@ -32,9 +30,9 @@ const dbRegisterUser = async function(data: RegisterUser){
                         photoUrl: data.photoUrl,
                     },
                 })
-    
+
                 return client
-    
+
             case TypeUser.DIARIST:
                 const diarist = await prisma.registerUser.create({
                     data: {
@@ -44,16 +42,14 @@ const dbRegisterUser = async function(data: RegisterUser){
                         photoUrl: data.photoUrl,
                     },
                 })
-    
+
                 return diarist
-    
+
             default:
                 throw new Error("Invalid typeUser")
         }
-    } catch (error) {    
-        
-        console.log(error);
-        
+    } catch (error) {
+
         return false
     }
 }
