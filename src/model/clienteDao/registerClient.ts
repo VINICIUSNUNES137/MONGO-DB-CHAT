@@ -1,19 +1,63 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, TypeUser } from "@prisma/client"
+import { RegisterUser } from "../../controller/register/interface/interfaceRegister";
 
 const prisma = new PrismaClient()
 
-const registerClient = async function(){
+const dbRegisterUser = async function(data: RegisterUser){
 
-    const client = await prisma.registerClient.create({
-        data: {
-            name: "Fernanda Regina da Silva",
-            photoUrl: "https://photo"
+    try {
+
+        const count = await prisma.registerUser.count({
+            where: {
+                typeUser: data.typeUser,
+                userMysqlId: data.userMysqlId,
+            },
+        })
+
+        console.log(count);
+        
+
+        if (count > 0) {
+            return false
         }
-    })
 
-    return client
+        switch (data.typeUser.toUpperCase()) {
+
+            case TypeUser.CLIENT:
+                const client = await prisma.registerUser.create({
+                    data: {
+                        typeUser: TypeUser.CLIENT,
+                        userMysqlId: data.userMysqlId,
+                        name: data.name,
+                        photoUrl: data.photoUrl,
+                    },
+                })
+    
+                return client
+    
+            case TypeUser.DIARIST:
+                const diarist = await prisma.registerUser.create({
+                    data: {
+                        typeUser: TypeUser.DIARIST,
+                        userMysqlId: data.userMysqlId,
+                        name: data.name,
+                        photoUrl: data.photoUrl,
+                    },
+                })
+    
+                return diarist
+    
+            default:
+                throw new Error("Invalid typeUser")
+        }
+    } catch (error) {    
+        
+        console.log(error);
+        
+        return false
+    }
 }
 
 export {
-    registerClient
+    dbRegisterUser
 }

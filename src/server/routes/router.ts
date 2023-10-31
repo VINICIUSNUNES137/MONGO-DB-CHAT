@@ -1,17 +1,20 @@
 import { Router, Request, Response, NextFunction } from "express"
 import bodyParser from "body-parser"
+import { registerUser } from "../../controller/register/registerUser"
 
-import { registerClient } from "../../model/clienteDao/registerClient"
+const jsonParser = bodyParser.json()
 const router = Router()
 
-const nanda = async function(){
-     
-    const client = await registerClient()
-    console.log(client);
+router.post('/v1/limpean/chat/register', jsonParser, async function(request: Request, response: Response) {
     
-}
+    const dataBody = request.body
+    const statusRegister = await registerUser(dataBody)
 
-nanda()
+    response.status(statusRegister.status)
+    response.json(statusRegister)
+    
+})
+
 
 export{
     router

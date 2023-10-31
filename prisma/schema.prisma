@@ -10,9 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model RegisterClient {
+enum TypeUser {
+  CLIENT
+  DIARIST
+}
+
+model RegisterUser {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  typeUser TypeUser
+  userMysqlId Int 
   name String
   photoUrl String
+}
 
+model Chat {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  serviceMysqlId Int
+  senderId Int
+  recipientId Int
+  message String
+  date DateTime
 }
