@@ -2,11 +2,13 @@ import { TypeUser } from "@prisma/client";
 
 interface Chat{
     serviceMysqlId: number,
-    typeUser: TypeUser,
-    sendId: number,
+    typeSender: TypeUser,
+    senderId: number,
+    typeRecipient: TypeUser,
     recipientId: number,
     message: string,
-    date: string
+    date: string,
+    hour: string
 }
 
 export {

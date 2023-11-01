@@ -21,12 +21,16 @@ model RegisterUser {
   userMysqlId Int 
   name String
   photoUrl String
+
+  @@unique([typeUser, userMysqlId])
 }
 
 model Chat {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  serviceMysqlId Int
+  serviceMysqlId Int 
+  typeSender TypeUser
   senderId Int
+  typeRecipient TypeUser
   recipientId Int
   message String
   date DateTime
