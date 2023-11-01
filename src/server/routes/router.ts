@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction, request, response } from "expr
 import bodyParser from "body-parser"
 import { registerUser } from "../../controller/register/registerUser"
 import { registerMessage } from "../../controller/message/messageUser"
+import { dbGetAllMessageByService } from "../../model/userDao/getMessage"
 
 const jsonParser = bodyParser.json()
 const router = Router()
@@ -23,6 +24,12 @@ router.post('/v1/limpean/chat/message', jsonParser, async function(request: Requ
     
     response.status(statusRegisterMessage.status)
     response.json(statusRegisterMessage)
+})
+
+router.get('/v1/limpean/chat/message', async function(request: Request, response: Response){
+
+    const getMessage = await dbGetAllMessageByService()
+    response.send(getMessage)
 })
 
 
