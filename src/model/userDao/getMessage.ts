@@ -2,12 +2,12 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-const dbGetAllMessageByService = async function(){
+const dbGetAllMessageByService = async function(id: number){
     try {
         
         const dataMessage = await prisma.chat.findMany({
             where: {
-                serviceMysqlId: 1
+                serviceMysqlId: id
             },select: {
                 message: true,
                 date: true,

@@ -1,38 +1,37 @@
-import { Router, Request, Response, NextFunction, request, response } from "express"
-import bodyParser from "body-parser"
-import { registerUser } from "../../controller/register/registerUser"
-import { registerMessage } from "../../controller/message/messageUser"
-import { dbGetAllMessageByService } from "../../model/userDao/getMessage"
+import { Router } from 'express';
+import { registerUser } from '../../controller/register/registerUser';
+import { registerMessage } from '../../controller/message/messageUser';
+import { dbGetAllMessageByService } from '../../model/userDao/getMessage';
 
-const jsonParser = bodyParser.json()
-const router = Router()
+const router = Router();
 
-router.post('/v1/limpean/chat/register', jsonParser, async function(request: Request, response: Response) {
-    
-    const dataBody = request.body
-    const statusRegister = await registerUser(dataBody)
+router.post('/v1/limpean/chat/register', async function(request, response) {
+  const dataBody = request.body;
+  const statusRegister = await registerUser(dataBody);
 
-    response.status(statusRegister.status)
-    response.json(statusRegister)
-    
-})
+  response.status(statusRegister.status).json(statusRegister);
+});
 
-router.post('/v1/limpean/chat/message', jsonParser, async function(request: Request, response: Response){
+router.post('/v1/limpean/chat/message', async function(request, response) {
+  const dataBody = request.body;
+  const statusRegisterMessage = await registerMessage(dataBody);
+  
+  response.status(statusRegisterMessage.status).json(statusRegisterMessage);
 
-    const dataBody = request.body
-    const statusRegisterMessage = await registerMessage(dataBody)
-    
-    response.status(statusRegisterMessage.status)
-    response.json(statusRegisterMessage)
-})
+  //const { serviceMysqlId, senderId, recipientId } = dataBody
 
-router.get('/v1/limpean/chat/message', async function(request: Request, response: Response){
+  //io.to(`client-${senderId}`).emit('message', statusRegisterMessage);
+  //io.to(`diarist-${recipientId}`).emit('newMessage', statusRegisterMessage)
+});
 
-    const getMessage = await dbGetAllMessageByService()
-    response.send(getMessage)
-})
+router.get('/v1/limpean/chat/message', async function(request, response) {
+  const getMessage = await dbGetAllMessageByService(1);
+  response.send(getMessage);
+
+  //Emite a mensagem para o cliente
+  //io.to(`client`).emit('newMessage', getMessage)
+
+});
 
 
-export{
-    router
-}
+export { router };
