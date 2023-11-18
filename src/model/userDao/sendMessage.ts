@@ -3,8 +3,8 @@ import { Chat } from "../../controller/message/interface/interfaceChat"
 
 const prisma = new PrismaClient()
 
-const dbRegisterMessage = async function(data: Chat) {
-    try {
+const dbRegisterMessage = async function(data: Chat) {    
+    try {        
 
         let statusRegister = true
 
@@ -42,8 +42,7 @@ const dbRegisterMessage = async function(data: Chat) {
             }
 
         return statusRegister
-    } catch (error) {
-                
+    } catch (error) {                
         return false;
     }
 }

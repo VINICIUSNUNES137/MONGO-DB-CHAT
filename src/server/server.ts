@@ -5,7 +5,12 @@ import { router } from './routes/router'; // Importe suas rotas aqui
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET, POST']
+    }
+});
 
 // Defina o middleware do corpo de análise JSON para o Express
 app.use(express.json());

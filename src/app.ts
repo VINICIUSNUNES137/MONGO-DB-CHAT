@@ -13,83 +13,21 @@ server.listen(port, () => {
   console.log(`Servidor aguardando requisições na porta ${port}`);
 });
 
-// io.on('connection', async (socket) => {
-//   console.log('Novo usuário conectado');
-
-//   socket.on('service_id', async (roomId) => {
-//     console.log(roomId);
-    
-//     const mensagens = await dbGetAllMessageByService(roomId.id)
-//     console.log(mensagens);
-    
-//     socket.emit("messages", mensagens)
-//   })
-
-//   // Quando um novo usuário postar uma mensagem, emita essa mensagem para todos os usuários
-//   socket.on('new-message', async (message) => {
-//     console.log(message);
-    
-//     const statusRegisterMessage = await registerMessage(message);
-//     console.log(statusRegisterMessage);
-//     const mensagens = await dbGetAllMessageByService(message.serviceMysqlId)
-
-    
-    
-//     if (statusRegisterMessage.status === 200) {
-//       // Emita a mensagem para todos os clientes conectados
-//       //io.emit("message", [message]);
-
-//       // Emita um evento de push para todos os clientes conectados
-//       io.emit("push", {
-//         mensagens
-//       });
-//     }
-//   });
-// });
-
-// io.on('connection', async (socket) => {
-//   console.log('Novo usuário conectado');
-
-//   socket.on('service_id', async (serviceMysqlId) => {
-//     console.log(serviceMysqlId);
-//     // Junte o socket a uma sala com base no `serviceMysqlId`
-//     socket.join(serviceMysqlId.id);
-    
-//     const mensagens = await dbGetAllMessageByService(serviceMysqlId.id);
-//     console.log(mensagens);
-    
-//     // Emita as mensagens para o socket atual
-//     socket.emit("messages", mensagens);
-//   });
-
-//   // Quando um novo usuário postar uma mensagem, emita essa mensagem para a sala correspondente
-//   socket.on('new-message', async (message) => {
-//     console.log(message);
-    
-//     const statusRegisterMessage = await registerMessage(message);
-//     console.log(statusRegisterMessage);
-
-//     if (statusRegisterMessage.status === 200) {
-//       // Emita a mensagem para a sala correspondente (com base no serviceMysqlId)
-//       io.to(message.serviceMysqlId).emit("push", {
-//         mensagens: await dbGetAllMessageByService(message.serviceMysqlId)
-//       });
-//     }
-//   });
-// });
-
-
-io.on('connection', async (socket) => {
+io.on('connect', async (socket) => {
   console.log(`Novo usuário conectado com o id ${socket.id}`);
-
-  // Enviar uma mensagem de boas-vindas vazia para associar o cliente à sala
-  //socket.emit('class', { serviceMysqlId: "" }); 
   
-  socket.on('new-message', (message) => {
+  socket.on('class', async (message) => {
+        
     socket.join(`service-${message.serviceMysqlId}`);
+    const mensagens = await dbGetAllMessageByService(message.serviceMysqlId);
+
+    io.to(`service-${message.serviceMysqlId}`).emit("push", {
+      mensagens
+    });
   });
 
   socket.on('new-message', async (message) => {
+    
     console.log(message);
   
     const statusRegisterMessage = await registerMessage(message);
