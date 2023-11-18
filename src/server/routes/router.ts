@@ -25,7 +25,9 @@ router.post('/v1/limpean/chat/message', async function(request, response) {
 });
 
 router.get('/v1/limpean/chat/message', async function(request, response) {
-  const getMessage = await dbGetAllMessageByService(1);
+  const id = request.query.id
+  
+  const getMessage = await dbGetAllMessageByService(Number(id));
   response.send(getMessage);
 
   //Emite a mensagem para o cliente
