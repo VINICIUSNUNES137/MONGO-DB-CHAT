@@ -22,12 +22,8 @@ const dbGetAllMessageByService = async function(id: number){
         })
         
 
-        if(dataMessage.length > 0){ 
-            let json = {}           
-            return json = {
-                data: dataMessage
-            } 
-
+        if(dataMessage.length > 0){            
+            return dataMessage
         }else{
             return 404
         }
