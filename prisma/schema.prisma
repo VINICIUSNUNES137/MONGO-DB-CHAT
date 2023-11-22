@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://root:135796Ar@cluster0.sqe960v.mongodb.net/flashchat?retryWrites=true&w=majority"
 }
 
 enum TypeUser {
