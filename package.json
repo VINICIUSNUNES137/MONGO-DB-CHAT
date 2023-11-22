@@ -4,7 +4,9 @@
   "description": "Desenvolvimento de um chat utilizando mongo, socket io e typescript",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only src/app.ts"
+    "dev": "ts-node-dev --transpile-only src/app.ts",
+    "build": "npx tsc",
+    "start": "node ./dist/app.js"
   },
   "author": "Gustavo Henrique",
   "license": "ISC",
